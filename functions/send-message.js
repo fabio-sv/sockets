@@ -42,8 +42,6 @@ const handler = async (event) => {
 
   let body = getBody(event);
 
-  event.requestContext.connectionId;
-
   const connections = await getAllConnections([
     event.requestContext.connectionId,
   ]);

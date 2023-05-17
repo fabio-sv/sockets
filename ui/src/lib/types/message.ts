@@ -4,7 +4,7 @@ export interface Payload {
   [key: string]: unknown;
 }
 
-export interface Message {
+export interface IMessage {
   message: string;
   self: boolean;
   from: string;

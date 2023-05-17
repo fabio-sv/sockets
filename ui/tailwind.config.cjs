@@ -5,6 +5,7 @@ module.exports = {
     extend: {
       colors: {
         red: '#00b2ff',
+        'warning-red': '#f70f0f',
       },
       fontSize: {
         '2xs': '10px',

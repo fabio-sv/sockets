@@ -1,15 +1,12 @@
 <script lang="ts">
   import classNames from 'classnames';
   import Time from './Time.svelte';
+  import { formatTime } from '../utils/time';
 
   export let self: boolean = false;
   export let time: Date;
 
-  $: timeString = time.toLocaleTimeString(['en-US'], {
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: false,
-  });
+  $: timeString = formatTime(time);
 
   $: sectionClass = classNames(
     'flex w-full mb-2 items-end gap-x-1 justify-end',

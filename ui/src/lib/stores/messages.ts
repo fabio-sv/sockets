@@ -1,23 +1,24 @@
 import { writable } from 'svelte/store';
-import type { Message } from '../types';
+import type { IMessage } from '../types';
 import { parse } from '../utils/parse';
+import { push } from './notifications';
 
-const messages = writable<Message[]>([]);
+const messages = writable<IMessage[]>([]);
 
 const socket = new WebSocket(import.meta.env.VITE_APP_WS_URL);
 
 socket.addEventListener('open', (event: Event) => {
-  console.info('Socket connected');
+  push('Connected succesfully!', 'good');
 });
 
 socket.addEventListener('close', (event: Event) => {
-  console.info('Socket disconnected');
+  push('Disconnected from server', 'bad');
 });
 
 socket.addEventListener('message', (event: MessageEvent) => {
   const json = parse(event.data);
 
-  const newMessage: Message = {
+  const newMessage: IMessage = {
     message: json.message,
     self: false,
     from: 'other',
@@ -28,7 +29,7 @@ socket.addEventListener('message', (event: MessageEvent) => {
 });
 
 const sendMesssage = (message: string) => {
-  const newMessage: Message = {
+  const newMessage: IMessage = {
     message: message,
     self: true,
     from: 'user',
