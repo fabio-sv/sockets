@@ -1,7 +1,5 @@
 # Sockets - The full stack
 
-[View app](https://d5hls6173tdtb.cloudfront.net/)
-
 There are 3 parts to this app. The infrastructure, the backend, and the frontend.
 
 1. The infrastructure
