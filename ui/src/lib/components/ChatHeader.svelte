@@ -1,7 +1,7 @@
 <script lang="ts">
-  import svelteLogo from '../../assets/svelte.svg';
+  import socketsLogo from '../../assets/letter-s.svg';
 
-  export let icon: string = svelteLogo;
+  export let icon: string = socketsLogo;
   export let title: string = 'Sockets';
 </script>
 
