@@ -7,7 +7,7 @@ There are 3 parts to this app. The infrastructure, the backend, and the frontend
 The infrastructure can be found in `terraform/` and it houses terraform to create a bunch of AWS resources required to deploy this app.
 It is worth noting that this app is serverless.
 
-2. The Backend
+2. The Backen
 
 The backend can be found in `functions/` and it is a few nodejs functions that are designed to be deployed on Lambda.
 
