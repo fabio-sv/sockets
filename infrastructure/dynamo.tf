@@ -1,5 +1,5 @@
 resource "aws_dynamodb_table" "connections" {
-  name           = "ConnectionTable"
+  name           = "ServerlessChatConnectionTable"
   read_capacity  = 1
   write_capacity = 1
   hash_key       = "connectionId"

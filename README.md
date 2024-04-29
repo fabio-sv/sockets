@@ -31,7 +31,7 @@ The WebSocket API Gateway has 3 routes to begin with:
 2. `$disconnect`
 3. `$default`
 
-You can create more, and in this app, I created a route called `sendmessage`. I didn't create the `$default` route but that's okay, we just get errors when clients pass an action that doesn't match the others.
+You can create more, and in this app, I created a route called `send`. I didn't create the `$default` route but that's okay, we just get errors when clients pass an action that doesn't match the others.
 
 ###### `$connect`
 
@@ -68,16 +68,16 @@ socket.addEventListener('close', (event) => {
 });
 ```
 
-###### `sendmessage`
+###### `send`
 
-When the client emits the action `'sendmessage'`, API Gateway picks it up, and calls the associated Lambda once again. The lambda then fetches all the connection ids in
+When the client emits the action `'send'`, API Gateway picks it up, and calls the associated Lambda once again. The lambda then fetches all the connection ids in
 the DynamoDB table barring it's own, and sends a message to each one. This is obviously a broadcast message, and if private messaging is required, then this would have to be implemented in similar patterns to servered architectures.
 
 ```javascript
 // To send a message
 socket.send(
   JSON.stringify({
-    action: 'sendmessage', // exact match to route
+    action: 'send', // exact match to route
     message: message, // anything you want
   })
 );
