@@ -44,7 +44,7 @@ const sendMesssage = (message: string) => {
 
   socket.send(
     JSON.stringify({
-      action: 'sendmessage',
+      action: 'send',
       message: message,
     })
   );

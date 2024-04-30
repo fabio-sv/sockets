@@ -33,3 +33,8 @@ output "api_url" {
   description = "URL of API Gateway"
   value       = aws_apigatewayv2_stage.main.invoke_url
 }
+
+output "bucket_name" {
+  description = "Name of S3 bucket"
+  value       = aws_s3_bucket.main.bucket
+}
