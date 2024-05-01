@@ -1,52 +1,31 @@
 import os, json, boto3
 
-client = boto3.client("apigatewaymanagementapi", endpoint_url=os.getenv("API_ENDPOINT"))
+api = boto3.client(
+    "apigatewaymanagementapi",
+    endpoint_url=os.getenv("API_ENDPOINT").replace("wss:", "https:"),
+)
 dynamodb = boto3.resource("dynamodb")
 table = dynamodb.Table(os.getenv("TABLE_NAME"))
 
 
-def get_body(event):
-    body = {}
-    try:
-        if "body" in event:
-            body = json.loads(event["body"])
-    except Exception as e:
-        print(e)
-    finally:
-        return body
+def get_all_connections(exclude_ids):
+    response = table.scan(ProjectionExpression="connectionId")
 
-
-async def get_all_connections(exclude_ids):
-    connections = table.scan()
     return [
-        item for item in connections["Items"] if item["connectionId"] not in exclude_ids
+        item["connectionId"]
+        for item in response["Items"]
+        if item["connectionId"] not in exclude_ids
     ]
 
 
 def handler(event, _):
-    if "requestContext" not in event:
-        return {
-            "statusCode": 400,
-            "body": json.dumps(
-                {
-                    "message": "Nothing to work with",
-                }
-            ),
-        }
-
-    body = get_body(event)
-
+    body = json.loads(event["body"])
     connections = get_all_connections([event["requestContext"]["connectionId"]])
-    promises = []
-    for connection in connections:
-        promises.append(
-            client.post_to_connection(
-                ConnectionId=connection["connectionId"],
-                Data=json.dumps(body).encode("utf-8"),
-            )
-        )
 
-    for promise in promises:
-        promise.wait()
+    for connection in connections:
+        api.post_to_connection(
+            ConnectionId=connection,
+            Data=json.dumps(body).encode("utf-8"),
+        )
 
     return {"statusCode": 200, "body": json.dumps({"message": "Messages sent"})}
