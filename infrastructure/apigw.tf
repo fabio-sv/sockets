@@ -31,7 +31,7 @@ resource "aws_apigatewayv2_route" "main" {
   for_each = aws_lambda_function.main
 
   api_id    = aws_apigatewayv2_api.main.id
-  route_key = each.value.function_name
+  route_key = contains(["connect", "disconnect"], each.value.function_name) ? format("$%s", each.value.function_name) : each.value.function_name
   target    = "integrations/${aws_apigatewayv2_integration.main[each.key].id}"
 }
 

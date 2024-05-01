@@ -21,8 +21,8 @@ resource "aws_lambda_function" "main" {
     }
   }
 
-  filename         = "${path.module}/functions.zip"
-  source_code_hash = filebase64sha256("${path.module}/functions.zip")
+  filename         = "./functions.zip"
+  source_code_hash = filebase64sha256("./functions.zip")
 }
 
 resource "aws_lambda_permission" "connect_lambda_permission" {
