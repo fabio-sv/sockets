@@ -5,7 +5,7 @@ import { push } from './notifications';
 
 const messages = writable<IMessage[]>([]);
 
-const socket = new WebSocket('wss://e76egma04b.execute-api.eu-west-1.amazonaws.com/dev');
+const socket = new WebSocket(import.meta.env.VITE_API_URL);
 
 socket.addEventListener('open', (event: Event) => {
   push('Connected succesfully!', 'good');
