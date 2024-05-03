@@ -54,12 +54,12 @@ resource "aws_lambda_function" "send" {
   function_name = "send"
   role          = aws_iam_role.main.arn
   runtime       = "python3.9"
-  handler       = "disconnect.handler"
+  handler       = "send.handler"
 
   environment {
     variables = {
-      TABLE_NAME       = aws_dynamodb_table.main.name
-      source_code_hash = filebase64sha256("./functions.zip")
+      TABLE_NAME   = aws_dynamodb_table.main.name
+      API_ENDPOINT = aws_apigatewayv2_stage.main.invoke_url
     }
   }
 

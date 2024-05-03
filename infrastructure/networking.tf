@@ -38,7 +38,11 @@ resource "aws_apigatewayv2_stage" "main" {
 }
 
 resource "aws_apigatewayv2_integration" "main" {
-  for_each = aws_lambda_function.main
+  for_each = {
+    connect    = aws_lambda_function.connect,
+    send       = aws_lambda_function.send,
+    disconnect = aws_lambda_function.disconnect
+  }
 
   api_id           = aws_apigatewayv2_api.main.id
   integration_type = "AWS_PROXY"
@@ -50,7 +54,11 @@ resource "aws_apigatewayv2_integration" "main" {
 }
 
 resource "aws_apigatewayv2_route" "main" {
-  for_each = aws_lambda_function.main
+  for_each = {
+    connect    = aws_lambda_function.connect,
+    send       = aws_lambda_function.send,
+    disconnect = aws_lambda_function.disconnect
+  }
 
   api_id    = aws_apigatewayv2_api.main.id
   route_key = contains(["connect", "disconnect"], each.value.function_name) ? format("$%s", each.value.function_name) : each.value.function_name
