@@ -1,11 +1,11 @@
 resource "aws_s3_bucket" "main" {
-  bucket = "fabio-wits-serverless-chat-room"
+  bucket = "serverless-chat-room"
 
   force_destroy = true
 }
 
 resource "aws_dynamodb_table" "main" {
-  name           = "fabio-wits-serverless-table"
+  name           = "serverless-table"
   read_capacity  = 1
   write_capacity = 1
   hash_key       = "connectionId"
