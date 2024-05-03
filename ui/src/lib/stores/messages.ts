@@ -5,7 +5,7 @@ import { push } from './notifications';
 
 const messages = writable<IMessage[]>([]);
 
-const socket = new WebSocket(import.meta.env.VITE_APP_WS_URL);
+const socket = new WebSocket(import.meta.env.VITE_API_URL || "wss://localhost:3000");
 
 socket.addEventListener('open', (event: Event) => {
   push('Connected succesfully!', 'good');
@@ -44,7 +44,7 @@ const sendMesssage = (message: string) => {
 
   socket.send(
     JSON.stringify({
-      action: 'sendmessage',
+      action: 'send',
       message: message,
     })
   );
