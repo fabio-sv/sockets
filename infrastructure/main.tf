@@ -1,11 +1,11 @@
 resource "aws_s3_bucket" "main" {
-  bucket = "my-super-duper-cool-bucket"
+  bucket = "fabio-wits-serverless-chat-room"
 
   force_destroy = true
 }
 
-resource "aws_dynamodb_table" "connections" {
-  name           = "ServerlessChatConnectionTable"
+resource "aws_dynamodb_table" "main" {
+  name           = "fabio-wits-serverless-table"
   read_capacity  = 1
   write_capacity = 1
   hash_key       = "connectionId"
@@ -24,7 +24,7 @@ resource "aws_lambda_function" "connect" {
 
   environment {
     variables = {
-      TABLE_NAME   = aws_dynamodb_table.connections.name
+      TABLE_NAME   = aws_dynamodb_table.main.name
       API_ENDPOINT = aws_apigatewayv2_stage.main.invoke_url
     }
   }
@@ -41,22 +41,28 @@ resource "aws_lambda_function" "disconnect" {
 
   environment {
     variables = {
-      TABLE_NAME   = aws_dynamodb_table.connections.name
+      TABLE_NAME   = aws_dynamodb_table.main.name
       API_ENDPOINT = aws_apigatewayv2_stage.main.invoke_url
     }
   }
+
+  filename         = "./functions.zip"
+  source_code_hash = filebase64sha256("./functions.zip")
 }
 
 resource "aws_lambda_function" "send" {
   function_name = "send"
   role          = aws_iam_role.main.arn
   runtime       = "python3.9"
-  handler       = "send.handler"
+  handler       = "disconnect.handler"
 
   environment {
     variables = {
-      TABLE_NAME   = aws_dynamodb_table.connections.name
-      API_ENDPOINT = aws_apigatewayv2_stage.main.invoke_url
+      TABLE_NAME       = aws_dynamodb_table.main.name
+      source_code_hash = filebase64sha256("./functions.zip")
     }
   }
+
+  filename         = "./functions.zip"
+  source_code_hash = filebase64sha256("./functions.zip")
 }
