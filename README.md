@@ -4,16 +4,16 @@ There are 3 parts to this app. The infrastructure, the backend, and the frontend
 
 1. The infrastructure
 
-The infrastructure can be found in `terraform/` and it houses terraform to create a bunch of AWS resources required to deploy this app.
+The infrastructure can be found in `infrastructure/` which houses terraform to create AWS resources required to deploy this app.
 It is worth noting that this app is serverless.
 
 2. The Backend
 
-The backend can be found in `functions/` and it is a few nodejs functions that are designed to be deployed on Lambda.
+The backend can be found in `functions/` which are python functions that are designed to be deployed on Lambda.
 
 3. The Frontend
 
-The frontend can be found in `ui/` and it is just a Svelte app created with Vite and TS
+The frontend can be found in `ui/` which is a Svelte web app used to connect to the API.
 
 ## The point
 
@@ -31,7 +31,7 @@ The WebSocket API Gateway has 3 routes to begin with:
 2. `$disconnect`
 3. `$default`
 
-You can create more, and in this app, I created a route called `send`. I didn't create the `$default` route but that's okay, we just get errors when clients pass an action that doesn't match the others.
+You can create more, and in this app, I created a route called `send`.
 
 ###### `$connect`
 
@@ -53,7 +53,7 @@ socket.addEventListener('open', (event) => {
 
 When the client disconnects, API Gateway will again pick it up, and call the associated integration proxy attached to `$disconnect`, again, a Lambda.
 In this lambda, you will get the `connectionId` in the event's request context, and can then remove this id from your table. This is how we cleanup the user
-that was saved in `$connect`
+that was saved in `$connect`.
 
 - JavaScript example
 
@@ -71,7 +71,7 @@ socket.addEventListener('close', (event) => {
 ###### `send`
 
 When the client emits the action `'send'`, API Gateway picks it up, and calls the associated Lambda once again. The lambda then fetches all the connection ids in
-the DynamoDB table barring it's own, and sends a message to each one. This is obviously a broadcast message, and if private messaging is required, then this would have to be implemented in similar patterns to servered architectures.
+the DynamoDB table barring it's own, and sends a message to each one. If private messaging is required, then this would have to be implemented in similar patterns to servered architectures.
 
 ```javascript
 // To send a message
