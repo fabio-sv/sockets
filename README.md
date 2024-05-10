@@ -95,3 +95,10 @@ socket.addEventListener('message', (event) => {
 ## Pipeline
 
 In terms of the pipeline, there is no pipeline.
+But to get started, run:
+```sh
+# Authenticate with AWS
+# install pnpm
+make install
+make deploy
+```
